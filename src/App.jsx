@@ -7,8 +7,8 @@ import {
   AddStudents,
   Login,
   CreateAccountPage,
-} from "./Pages/index";
-import StdRecord from "./Pages/StdRecord";
+} from "./pages/index";
+import StdRecord from "./pages/StdRecord";
 import AddTeacher from "./pages/AddTeacher";
 import TeacherTable from "./pages/TeacherTable";
 import AddMarks from "./pages/AddMarks";
