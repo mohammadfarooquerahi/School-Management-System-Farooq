@@ -245,7 +245,7 @@ const Attendance = () => {
             </button>
             {saved && (
               <span className="text-success font-medium">
-                ✅ Attendance saved for {date}!
+                Attendance saved for {date}.
               </span>
             )}
           </div>

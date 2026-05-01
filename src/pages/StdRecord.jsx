@@ -20,7 +20,7 @@ const StudentTable = () => {
     ...new Set(students.map((s) => s.coursename).filter(Boolean)),
   ];
 
-  // ✅ Filter using FirstName + lastName
+  //  Filter using FirstName + lastName
   const filteredStudents = students.filter((s) => {
     const fullName = `${s.FirstName} ${s.lastName}`.toLowerCase();
     const matchName = fullName.includes(search.toLowerCase());
@@ -93,7 +93,7 @@ const StudentTable = () => {
 
       <div className="overflow-x-auto rounded-xl border border-base-300">
         <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
+          <thead className="bg-base-300">
             <tr>
               <th>#</th>
               <th>Name</th>

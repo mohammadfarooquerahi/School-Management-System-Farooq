@@ -50,7 +50,7 @@ const AddStudents = () => {
     <div className="p-6">
       {/* Page Title */}
       <h1 className="text-2xl font-bold uppercase mb-6">
-        {id ? "✏️ Edit Student" : "🎓 Student Admission Form"}
+        {id ? " Edit Student" : " Student Admission Form"}
       </h1>
 
       <div className="bg-base-200 rounded-2xl p-6 shadow max-w-5xl">

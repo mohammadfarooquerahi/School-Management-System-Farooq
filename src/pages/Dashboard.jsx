@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
-  // ✅ Get data directly from Redux store
+  //  Get data directly from Redux store
   const { students } = useSelector((state) => state.studentReducer);
   const { teachers } = useSelector((state) => state.teacherReducer);
 
@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <div className="p-6">
       {/* Title */}
-      <h2 className="text-2xl font-bold mb-6 uppercase">Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-6 uppercase"> Dashboard</h2>
 
       {/* Stat Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -65,7 +65,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Students */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">🎓 Recent Students</h3>
+          <h3 className="text-lg font-semibold mb-3"> Recent Students</h3>
           <div className="overflow-x-auto rounded-xl border border-base-300">
             <table className="table table-zebra w-full">
               <thead className="bg-base-200">
@@ -107,7 +107,7 @@ const Dashboard = () => {
 
         {/* Recent Teachers */}
         <div>
-          <h3 className="text-lg font-semibold mb-3">👨‍🏫 Recent Teachers</h3>
+          <h3 className="text-lg font-semibold mb-3"> Recent Teachers</h3>
           <div className="overflow-x-auto rounded-xl border border-base-300">
             <table className="table table-zebra w-full">
               <thead className="bg-base-200">

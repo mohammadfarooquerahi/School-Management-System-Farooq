@@ -200,7 +200,10 @@ const AddMarks = () => {
               onChange={(e) => setCustomSubject(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addCustomSubject()}
             />
-            <button className="btn btn-primary" onClick={addCustomSubject}>
+            <button
+              className="btn btn-primary px-6 mr-3"
+              onClick={addCustomSubject}
+            >
               Add
             </button>
           </div>
@@ -210,7 +213,7 @@ const AddMarks = () => {
       {/* Subjects Table */}
       <div className="overflow-x-auto rounded-xl border border-base-300 mb-6">
         <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
+          <thead className="bg-base-300">
             <tr>
               <th>#</th>
               <th>Subject</th>
@@ -305,12 +308,15 @@ const AddMarks = () => {
 
       {/* Save */}
       <div className="flex items-center gap-4">
-        <button className="btn btn-primary w-40" onClick={handleSave}>
+        <button
+          className="btn btn-primary w-40 border border-blue-900"
+          onClick={handleSave}
+        >
           Save Marks
         </button>
         {saved && (
           <span className="text-success font-medium">
-            ✅ Marks saved successfully!
+            Marks saved successfully.
           </span>
         )}
       </div>

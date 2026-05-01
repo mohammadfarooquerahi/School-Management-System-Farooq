@@ -48,7 +48,7 @@ const AddTeacher = () => {
     <div className="p-6">
       {/* Page Title */}
       <h1 className="text-2xl font-bold uppercase mb-6">
-        {id ? "✏️ Edit Teacher" : "👨‍🏫 Add Teacher"}
+        {id ? " Edit Teacher" : " Add Teacher"}
       </h1>
 
       <div className="bg-base-200 rounded-2xl p-6 shadow max-w-5xl">

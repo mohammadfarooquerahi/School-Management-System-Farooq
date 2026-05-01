@@ -8,16 +8,16 @@ const TeacherTable = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // ✅ Search & Filter state
+  //  Search & Filter state
   const [search, setSearch] = useState("");
   const [subjectFilter, setSubjectFilter] = useState("");
 
-  // ✅ Get unique subjects for dropdown
+  //  Get unique subjects for dropdown
   const uniqueSubjects = [
     ...new Set(teachers.map((t) => t.subject).filter(Boolean)),
   ];
 
-  // ✅ Filtered list
+  //  Filtered list
   const filteredTeachers = teachers.filter((t) => {
     const matchName = t.fullName?.toLowerCase().includes(search.toLowerCase());
     const matchSubject = subjectFilter ? t.subject === subjectFilter : true;
@@ -74,7 +74,7 @@ const TeacherTable = () => {
 
       <div className="overflow-x-auto rounded-xl border border-base-300">
         <table className="table table-zebra w-full">
-          <thead className="bg-base-200">
+          <thead className="bg-base-300">
             <tr>
               <th>#</th>
               <th>Name</th>
