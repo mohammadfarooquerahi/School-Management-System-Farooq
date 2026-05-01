@@ -1,160 +1,270 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { addStudents, updateStudent } from "../Redux/Feature/AddstudentSlice";
 
-
 const AddStudents = () => {
   const [Studentdata, setStudent] = useState({
-    FirstName: '',
-    lastName: '',
-    dob: '',
-    Gender: '',
-    contact: '',
-    CINC: '',
-    email: '',
-    religion: '',
-    coursename: '',
-    campus: '',
-    Current_Address: '',
-    postal: '',
-    id: '',
-  })
+    FirstName: "",
+    lastName: "",
+    dob: "",
+    Gender: "",
+    contact: "",
+    CNIC: "",
+    email: "",
+    class: "",
+    coursename: "",
+    campus: "",
+    currentAddress: "",
+    city: "",
+    id: "",
+  });
 
-  const { id } = useParams(); 
+  const { id } = useParams();
   const dispatch = useDispatch();
-
-  const { students } = useSelector(state => state.studentReducer);
+  const navigate = useNavigate();
+  const { students } = useSelector((state) => state.studentReducer);
 
   useEffect(() => {
-    console.log(id);
-
-    if(id){
-      const editStd = students.find((stdObj) => {
-        if(stdObj.id == id){
-          return stdObj;
-        }
-      });
-      setStudent(editStd);
+    if (id) {
+      const editStd = students.find((s) => s.id == id);
+      if (editStd) setStudent(editStd);
     }
   }, []);
 
   const onhandlestudentdata = (evt, propertyname) => {
-    setStudent((pervstate) => ({ ...pervstate, [propertyname]: evt.target.value }))
-  }
+    setStudent((prev) => ({ ...prev, [propertyname]: evt.target.value }));
+  };
 
   const formSubmit = (evt) => {
     evt.preventDefault();
     if (id) {
       dispatch(updateStudent(Studentdata));
     } else {
-      dispatch(addStudents({
-        ...Studentdata,
-        id: Date.now()
-      }))
+      dispatch(addStudents({ ...Studentdata, id: Date.now() }));
     }
-  }
+    navigate("/studentRecord");
+  };
 
   return (
-    <div className='borde2 m-4 bg-[#f8f8f8] rounded' >
-
-      <h1 className="text-xl uppercase font-medium py-6 px-4">
-        { id ? 'Edit Admission Foam' : 'Admission Foam'}
+    <div className="p-6">
+      {/* Page Title */}
+      <h1 className="text-2xl font-bold uppercase mb-6">
+        {id ? "✏️ Edit Student" : "🎓 Student Admission Form"}
       </h1>
 
-      <form action="" className="grid grid-cols-4 gap-4 px-4" onSubmit={formSubmit}>
+      <div className="bg-base-200 rounded-2xl p-6 shadow max-w-5xl">
+        <form onSubmit={formSubmit}>
+          {/* Section: Personal Info */}
+          <p className="text-sm font-semibold text-base-content/50 uppercase tracking-widest mb-4">
+            Personal Information
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">First Name</span>
+              </label>
+              <input
+                value={Studentdata.FirstName}
+                onChange={(evt) => onhandlestudentdata(evt, "FirstName")}
+                className="input input-bordered w-full"
+                placeholder="Enter first name"
+                type="text"
+                required
+              />
+            </div>
 
-        <div className="" >
-          <label htmlFor="" className="font-semibold">First Name</label>
-          <input value={Studentdata.FirstName} onChange={(evt) => { onhandlestudentdata(evt, 'FirstName') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="Enter your email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="" className="font-semibold">Last Name</label>
-          <input value={Studentdata.lastName}
-            onChange={(evt) => { onhandlestudentdata(evt, 'lastName') }} className="bg-white p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="Enter your email" type="text" />
-        </div>
-        <div>
-          <label htmlFor="" className="font-semibold">Date of Birth</label>
-          <input value={Studentdata.dob}
-            onChange={(evt) => { onhandlestudentdata(evt, 'dob') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="" type="date" />
-        </div>
-        <div className="" >
-          <label htmlFor="" className="font-semibold">Gender</label>
-          <input value={Studentdata.Gender} onChange={(evt) => { onhandlestudentdata(evt, 'Gender') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="Male/Female" type="text" />
-        </div>
-        <div>
-          <label htmlFor="phone" className="font-semibold"  >Contact No:</label>
-          <input value={Studentdata.contact} onChange={(evt) => { onhandlestudentdata(evt, 'contact') }}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Last Name</span>
+              </label>
+              <input
+                value={Studentdata.lastName}
+                onChange={(evt) => onhandlestudentdata(evt, "lastName")}
+                className="input input-bordered w-full"
+                placeholder="Enter last name"
+                type="text"
+                required
+              />
+            </div>
 
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="+92-" type="tel" id="phone" name="phone" />
-        </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Date of Birth</span>
+              </label>
+              <input
+                value={Studentdata.dob}
+                onChange={(evt) => onhandlestudentdata(evt, "dob")}
+                className="input input-bordered w-full"
+                type="date"
+              />
+            </div>
 
-        <div className="" >
-          <label htmlFor="" className="font-semibold">CINC No:</label>
-          <input value={Studentdata.CINC} onChange={(evt) => { onhandlestudentdata(evt, 'CINC') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="41303-1586080-9" type="number" />
-        </div>
-        <div className="" >
-          <label htmlFor="" className="font-semibold">Email Address:</label>
-          <input value={Studentdata.email} onChange={(evt) => { onhandlestudentdata(evt, 'email') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="Enter your email" type="email" />
-        </div>
-        <div className="" >
-          <label htmlFor="" className="font-semibold">Religion</label>
-          <input value={Studentdata.religion} onChange={(evt) => { onhandlestudentdata(evt, 'religion') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="Islam" type="text" />
-        </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Gender</span>
+              </label>
+              <select
+                value={Studentdata.Gender}
+                onChange={(evt) => onhandlestudentdata(evt, "Gender")}
+                className="select select-bordered w-full"
+              >
+                <option value="" disabled>
+                  Select Gender
+                </option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
 
-        <div>
-          <label className="font-semibold">Course Name:</label>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Contact No</span>
+              </label>
+              <input
+                value={Studentdata.contact}
+                onChange={(evt) => onhandlestudentdata(evt, "contact")}
+                className="input input-bordered w-full"
+                placeholder="+92 3001234567"
+                type="tel"
+              />
+            </div>
 
-          <select value={Studentdata.coursename}
-            onChange={(evt) => { onhandlestudentdata(evt, 'coursename') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1">
-            <option
-              value="">Select Course</option>
-            <option value="web">Web Development</option>
-            <option value="app">App Development</option>
-            <option value="graphic">Graphic Design</option>
-            <option value="ai">AI / Machine Learning</option>
-          </select>
-        </div>
-        <div>
-          <label className="font-semibold">Campus/Branch</label>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">CNIC No</span>
+              </label>
+              <input
+                value={Studentdata.CNIC}
+                onChange={(evt) => onhandlestudentdata(evt, "CNIC")}
+                className="input input-bordered w-full"
+                placeholder="41303-0000000-0"
+                type="text"
+              />
+            </div>
 
-          <select value={Studentdata.campus}
-            onChange={(evt) => { onhandlestudentdata(evt, 'campus') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1">
-            <option
-              value="">Select Campus</option>
-            <option value="auto">Auto Ban</option>
-            <option value="sadar">Sadar</option>
-            <option value="sarfarz">Sarfarz Colony</option>
-          </select>
-        </div>
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Email Address</span>
+              </label>
+              <input
+                value={Studentdata.email}
+                onChange={(evt) => onhandlestudentdata(evt, "email")}
+                className="input input-bordered w-full"
+                placeholder="example@email.com"
+                type="email"
+              />
+            </div>
+          </div>
 
-        <div className="" >
-          <label htmlFor="" className="font-semibold">Current Address:</label>
-          <input value={Studentdata.Current_Address} onChange={(evt) => { onhandlestudentdata(evt, 'Current_Address') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="house.no-7" type="text" />
-        </div>
-        <div className="" >
-          <label htmlFor="" className="font-semibold">Postal Code:</label>
-          <input value={Studentdata.postal} onChange={(evt) => { onhandlestudentdata(evt, 'postal') }}
-            className="p-2 rounded outline-none border-2 border-gray-300 w-full my-1" placeholder="71000" type="number" />
-        </div>
+          {/* Divider */}
+          <div className="divider"></div>
 
-        <button className="active:scale-95 transition-all hover:bg-blue-600 text-white text-lg w-1/3 my-3 py-2 rounded bg-blue-500">
-          {id ? "Update" : "Submit"}
-        </button>
-      </form>
+          {/* Section: Academic Info */}
+          <p className="text-sm font-semibold text-base-content/50 uppercase tracking-widest mb-4">
+            Academic Information
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Class</span>
+              </label>
+              <input
+                value={Studentdata.class}
+                onChange={(evt) => onhandlestudentdata(evt, "class")}
+                className="input input-bordered w-full"
+                placeholder="e.g. 10-A"
+                type="text"
+              />
+            </div>
 
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Course Name</span>
+              </label>
+              <select
+                value={Studentdata.coursename}
+                onChange={(evt) => onhandlestudentdata(evt, "coursename")}
+                className="select select-bordered w-full"
+              >
+                <option value="">Select Course</option>
+                <option value="web">Web Development</option>
+                <option value="app">App Development</option>
+                <option value="graphic">Graphic Design</option>
+                <option value="ai">AI / Machine Learning</option>
+              </select>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Campus / Branch</span>
+              </label>
+              <select
+                value={Studentdata.campus}
+                onChange={(evt) => onhandlestudentdata(evt, "campus")}
+                className="select select-bordered w-full"
+              >
+                <option value="">Select Campus</option>
+                <option value="auto">Auto Ban</option>
+                <option value="sadar">Sadar</option>
+                <option value="sarfarz">Sarfarz Colony</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="divider"></div>
+
+          {/* Section: Address */}
+          <p className="text-sm font-semibold text-base-content/50 uppercase tracking-widest mb-4">
+            Address Information
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">Current Address</span>
+              </label>
+              <input
+                value={Studentdata.currentAddress}
+                onChange={(evt) => onhandlestudentdata(evt, "currentAddress")}
+                className="input input-bordered w-full"
+                placeholder="House no, Street, Area"
+                type="text"
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">District / City</span>
+              </label>
+              <input
+                value={Studentdata.city}
+                onChange={(evt) => onhandlestudentdata(evt, "city")}
+                className="input input-bordered w-full"
+                placeholder="e.g. Hyderabad"
+                type="text"
+              />
+            </div>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex gap-3">
+            <button type="submit" className="btn btn-primary w-36">
+              {id ? "Update" : "Submit"}
+            </button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={() => navigate("/studentRecord")}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default AddStudents
+export default AddStudents;

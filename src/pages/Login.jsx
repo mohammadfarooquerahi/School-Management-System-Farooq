@@ -1,49 +1,136 @@
-import { Link } from "react-router"
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../redux/Feature/AuthSlice";
+import { useNavigate, Link } from "react-router";
 
+const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { users } = useSelector((state) => state.authReducer);
 
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-const  Login = () => {
+  const handleChange = (e) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setError("");
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const found = users.find(
+      (u) => u.email === form.email && u.password === form.password,
+    );
+    if (found) {
+      const { password, ...safeUser } = found;
+      dispatch(login(safeUser));
+      navigate("/dashboard");
+    } else {
+      setError("Invalid email or password!");
+    }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="w-1/3 rounded-2xl p-12 text-black bg-[#F8F8F8] border-2 border-gray-200 ">
-        <div className="space-y-2 mb-8">
-          <h1 className="text-black font-semibold text-3xl">WELCOME BACK</h1>
-          <p className="text-gray-400 text-lg">Welcome back! Please enter your details</p>
-        </div>
-        <form action="" className="">
-          <div className="my-5 ">
-            <label htmlFor="" className="font-semibold">Email</label>
-            <input className="p-3 rounded-xl outline-none border-2 border-gray-300 w-full my-1" placeholder="Enter your email" type="text" />
+    <div className="min-h-screen flex items-center justify-center bg-base-300 px-4">
+      <div className="card bg-base-200 shadow-xl w-full max-w-md">
+        <div className="card-body">
+          {/* Header */}
+          <div className="text-center mb-4">
+            <h1 className="text-3xl font-bold">🏫 Sindh Academy</h1>
+            <p className="text-base-content/50 text-sm mt-1">
+              School Management System
+            </p>
           </div>
-          <div>
-            <label htmlFor="" className="font-semibold">Password</label>
-            <input className="p-3 rounded-xl outline-none border-2 border-gray-300 w-full my-1" placeholder="*******" type="text" />
 
-          </div>
-          <div className="flex justify-between my-4">
-            <div className="flex gap-1">
-              <input type="checkbox" name="" id="" className="" />
-              <p className="font-semibold">Remember me</p>
+          <h2 className="text-xl font-semibold mb-2">Login to your account</h2>
 
+          {/* Quick Login Badges */}
+          <div className="mb-4">
+            <p className="text-xs text-base-content/50 mb-2">Quick login:</p>
+            <div className="flex gap-2 flex-wrap">
+              <button
+                className="badge badge-primary badge-outline cursor-pointer p-3"
+                onClick={() =>
+                  setForm({ email: "admin@sindh.edu", password: "Admin@123" })
+                }
+              >
+                Admin
+              </button>
+              <button
+                className="badge badge-success badge-outline cursor-pointer p-3"
+                onClick={() =>
+                  setForm({
+                    email: "teacher@sindh.edu",
+                    password: "Teacher@123",
+                  })
+                }
+              >
+                Teacher Demo
+              </button>
+              <button
+                className="badge badge-info badge-outline cursor-pointer p-3"
+                onClick={() =>
+                  setForm({
+                    email: "student@sindh.edu",
+                    password: "Student@123",
+                  })
+                }
+              >
+                Student Demo
+              </button>
             </div>
-            <p><a className="text-blue-400" href="">Forgot Password</a></p>
           </div>
 
-          <button className="bg-blue-500 text-white text-xl py-3 rounded-xl  w-full">Sign in</button>
-          <div className=" flex justify-center items-center gap-2 border-2 border-gray-300  text-black text-lg py-3 rounded-xl font-normal w-full my-3">
-            <img src="../public/google.png" className="w-6" alt="" />
-            <button >Sign in With Google</button>
-          </div>
-          <p className="text-center  text-gray-400">Don't have an account? <Link to='/createAccount' className="text-blue-500">Sign up for free!</Link></p>
+          {/* Form */}
+          <form onSubmit={handleLogin}>
+            <div className="form-control mb-3">
+              <label className="label">
+                <span className="label-text">Email</span>
+              </label>
+              <input
+                name="email"
+                type="email"
+                className="input input-bordered w-full"
+                placeholder="Enter your email"
+                value={form.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
-        </form>
+            <div className="form-control mb-4">
+              <label className="label">
+                <span className="label-text">Password</span>
+              </label>
+              <input
+                name="password"
+                type="password"
+                className="input input-bordered w-full"
+                placeholder="Enter your password"
+                value={form.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
 
+            {error && (
+              <div className="alert alert-error mb-4 py-2 text-sm">
+                ❌ {error}
+              </div>
+            )}
 
+            <button type="submit" className="btn btn-primary w-full">
+              Login
+            </button>
+          </form>
+
+          <div className="divider text-xs">Don't have an account?</div>
+
+          <Link to="/createAccount">Create Account</Link>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
-
+export default Login;

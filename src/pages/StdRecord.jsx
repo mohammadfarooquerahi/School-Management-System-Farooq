@@ -1,82 +1,154 @@
-import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Pencil, Trash } from 'lucide-react';
-import { deleteStudent } from '../Redux/Feature/AddstudentSlice';
-import { useNavigate } from 'react-router';
+import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { useSelector, useDispatch } from "react-redux";
+import { deleteStudent } from "../Redux/Feature/AddstudentSlice";
 
-
-
-const StdRecord = () => {
-
-  const reduxStdData = useSelector((state) => (state.studentReducer.students));
+const StudentTable = () => {
+  const { students } = useSelector((state) => state.studentReducer);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
-  const stdDelete = (stdID) => {
-    dispatch(deleteStudent(stdID))
+  const [search, setSearch] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [courseFilter, setCourseFilter] = useState("");
 
-  }
+  // Unique classes and courses from actual data
+  const uniqueClasses = [
+    ...new Set(students.map((s) => s.class).filter(Boolean)),
+  ];
+  const uniqueCourses = [
+    ...new Set(students.map((s) => s.coursename).filter(Boolean)),
+  ];
 
-  const handleEdit  = (item)=>{
-    navigate(`/addStudent/${item.id}`)
-  }
+  // ✅ Filter using FirstName + lastName
+  const filteredStudents = students.filter((s) => {
+    const fullName = `${s.FirstName} ${s.lastName}`.toLowerCase();
+    const matchName = fullName.includes(search.toLowerCase());
+    const matchClass = classFilter ? s.class === classFilter : true;
+    const matchCourse = courseFilter ? s.coursename === courseFilter : true;
+    return matchName && matchClass && matchCourse;
+  });
 
+  const handleDelete = (id) => dispatch(deleteStudent(id));
+  // const handleEdit = (item) => navigate(`/StudentForm/${item.id}`);
+  const handleEdit = (item) => navigate(`/addStudent/${item.id}`);
 
   return (
-    <div className="overflow-x-auto">
-      <table className="table">
-        {/* head */}
-        <thead>
-          <tr>
-            <th></th>
-            <th>Name</th>
-            <th>Email </th>
-            <th>Course</th>
-            <th>Branch</th>
-            <th>Gender</th>
-            <th>Contact No</th>
-          </tr>
-        </thead>
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4 uppercase">Student Records</h2>
 
-        {reduxStdData.map((stdData, index) => (
-          <tbody key={index} className=''>
-            <tr  className='border-2 border-blue-950'>
-              <th>{stdData.id}</th>
-              <td>{stdData.FirstName}</td>
-              <td>{stdData.email}</td>
-              <td>{stdData.coursename}</td>
-              <td>{stdData.campus}</td>
-              <td>{stdData.Gender}</td>
-              <td>{stdData.contact}</td>
-              <td>
-                <div className="flex gap-2">
+      {/* Search & Filter Bar */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-4 flex-wrap">
+        <input
+          type="text"
+          placeholder="Search by name..."
+          className="input input-bordered w-full sm:w-60"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-                  <button onClick={ ()=> {handleEdit(stdData)}}
-                    className="p-2 rounded-lg bg-blue-500 text-white shadow-sm 
-  hover:bg-blue-600 hover:scale-110 hover:shadow-md 
-  active:scale-95 transition duration-200">
-                    <Pencil size={16} />
-                  </button>
+        <select
+          className="select select-bordered w-full sm:w-44"
+          value={classFilter}
+          onChange={(e) => setClassFilter(e.target.value)}
+        >
+          <option value="">All Classes</option>
+          {uniqueClasses.map((cls, i) => (
+            <option key={i} value={cls}>
+              {cls}
+            </option>
+          ))}
+        </select>
 
-                  <button onClick={ ()=> stdDelete(stdData.id)}
-                    className="p-2 rounded-lg bg-red-500 text-white shadow-sm 
-  hover:bg-red-600 hover:scale-110 hover:shadow-md 
-  active:scale-95 transition duration-200">
-                    <Trash size={16} />
-                  </button>
+        <select
+          className="select select-bordered w-full sm:w-48"
+          value={courseFilter}
+          onChange={(e) => setCourseFilter(e.target.value)}
+        >
+          <option value="">All Courses</option>
+          <option value="web">Web Development</option>
+          <option value="app">App Development</option>
+          <option value="graphic">Graphic Design</option>
+          <option value="ai">AI / Machine Learning</option>
+        </select>
 
-                </div>
-              </td>
+        {(search || classFilter || courseFilter) && (
+          <button
+            className="btn btn-ghost"
+            onClick={() => {
+              setSearch("");
+              setClassFilter("");
+              setCourseFilter("");
+            }}
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Count */}
+      <p className="text-sm text-base-content/50 mb-3">
+        Showing {filteredStudents.length} of {students.length} students
+      </p>
+
+      <div className="overflow-x-auto rounded-xl border border-base-300">
+        <table className="table table-zebra w-full">
+          <thead className="bg-base-200">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Class</th>
+              <th>Course</th>
+              <th>Campus</th>
+              <th>Contact</th>
+              <th>Actions</th>
             </tr>
+          </thead>
+          <tbody>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((s, index) => (
+                <tr key={s.id}>
+                  <td>{index + 1}</td>
+                  <td>
+                    {s.FirstName} {s.lastName}
+                  </td>
+                  <td>{s.class || "N/A"}</td>
+                  <td>{s.coursename || "N/A"}</td>
+                  <td>{s.campus || "N/A"}</td>
+                  <td>{s.contact || "N/A"}</td>
+                  <td className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(s)}
+                      className="btn btn-sm btn-info"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(s.id)}
+                      className="btn btn-sm btn-error"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan={7}
+                  className="text-center text-base-content/50 py-6"
+                >
+                  {search || classFilter || courseFilter
+                    ? "No students match your search"
+                    : "No students added yet"}
+                </td>
+              </tr>
+            )}
           </tbody>
-
-        ))}
-
-
-      </table>
+        </table>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default StdRecord
+export default StudentTable;
