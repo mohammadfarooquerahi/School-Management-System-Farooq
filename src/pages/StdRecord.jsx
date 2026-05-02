@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteStudent } from "../Redux/Feature/AddstudentSlice";
+import { deleteStudent } from "../redux/Feature/AddstudentSlice";
 
 const StudentTable = () => {
   const { students } = useSelector((state) => state.studentReducer);

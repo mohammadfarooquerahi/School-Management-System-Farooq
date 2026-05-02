@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { addStudents, updateStudent } from "../Redux/Feature/AddstudentSlice";
+import { addStudents, updateStudent } from "../redux/Feature/AddstudentSlice";
 
 const AddStudents = () => {
   const [Studentdata, setStudent] = useState({

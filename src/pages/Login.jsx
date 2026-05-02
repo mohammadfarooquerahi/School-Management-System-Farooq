@@ -36,7 +36,7 @@ const Login = () => {
         <div className="card-body">
           {/* Header */}
           <div className="text-center mb-4">
-            <h1 className="text-3xl font-bold">🏫 Sindh Academy</h1>
+            <h1 className="text-3xl font-bold"> Sindh Academy</h1>
             <p className="text-base-content/50 text-sm mt-1">
               School Management System
             </p>
